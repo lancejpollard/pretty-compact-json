@@ -10,7 +10,7 @@ function makePrettyArray(obj, indent = 0, nested = 0) {
     const arr = []
     let isSimple = true
     obj.forEach(val => {
-      const item = makePrettyArray(val, indent + 2, nested + 2)
+      const item = makePrettyArray(val, 0, nested + 2)
       if (item.length > 1) {
         isSimple = false
       }
@@ -41,11 +41,11 @@ function makePrettyArray(obj, indent = 0, nested = 0) {
     if (typeof obj === 'object') {
       str.push(`{`)
       const keys = Object.keys(obj)
-      let newIndent = nested + 1
+      let newIndent = 0 // account for {
       keys.forEach((key, i) => {
+        const initialKey = ` "${key}": `
+        newIndent = nested + 1 + initialKey.length
         if (i === 0) {
-          const initialKey = ` "${key}": `
-          newIndent += initialKey.length
           str.push(initialKey)
         } else {
           str.push(`\n${makeIndent((nested ? nested : indent) + 2)}"${key}": `)
