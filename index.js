@@ -18,13 +18,17 @@ function makePrettyArray(obj, indent = 0) {
     })
 
     if (isSimple) {
-      str.push(`[ ${arr.join(', ')} ]`)
+      if (arr.length) {
+        str.push(`[ ${arr.join(', ')} ]`)
+      } else {
+        str.push(`[]`)
+      }
     } else {
       str.push(`[`)
       arr.forEach((item, i) => {
         str.push(`\n${makeIndent(indent + 1)}${item}`)
         if (i < arr.length - 1) {
-          str.push.push(',')
+          str.push(',')
         }
       })
       str.push(` ]`)
@@ -40,7 +44,11 @@ function makePrettyArray(obj, indent = 0) {
           str.push(`,`)
         }
       })
-      str.push(` }`)
+      if (keys.length) {
+        str.push(` }`)
+      } else {
+        str.push(`}`)
+      }
     } else if (typeof obj === 'boolean') {
       str.push(`${obj}`)
     } else if (typeof obj === 'string') {
