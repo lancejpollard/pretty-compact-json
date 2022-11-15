@@ -1,5 +1,5 @@
 
-const prettify = require('.')
+const prettify = require('./1')
 
 console.log(prettify({
   a: [
