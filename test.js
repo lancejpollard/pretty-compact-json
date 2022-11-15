@@ -15,7 +15,7 @@ console.log(prettify({
     },
     w: {
       a: { b: {
-        c: 456, d: 789, e: 'hello world', f: { g: true, p: [1, { q: 2 }, 3] }
+        c: 456, d: 789, e: 'hello world', f: { g: true, p: [1, { q: 2, v: 'bar' }, 3] }
       } }
     }
   },

@@ -3,14 +3,14 @@ module.exports = function prettify(obj, indent = 0) {
   return makePrettyArray(obj, indent).join('')
 }
 
-function makePrettyArray(obj, indent = 0, nestedObject = false) {
+function makePrettyArray(obj, indent = 0, nested = 0) {
   const str = []
 
   if (Array.isArray(obj)) {
     const arr = []
     let isSimple = true
     obj.forEach(val => {
-      const item = makePrettyArray(val, indent + 2, true)
+      const item = makePrettyArray(val, indent + 2, nested + 2)
       if (item.length > 1) {
         isSimple = false
       }
@@ -25,13 +25,11 @@ function makePrettyArray(obj, indent = 0, nestedObject = false) {
       }
     } else {
       str.push(`[`)
-      let initialIndent = indent
       arr.forEach((item, i) => {
         if (i === 0) {
-          initialIndent += 5
           str.push(` ${item}`)
         } else {
-          str.push(`\n${makeIndent((nestedObject ? initialIndent : indent) + 2)}${item}`)
+          str.push(`\n${makeIndent(nested + 1)} ${item}`)
         }
         if (i < arr.length - 1) {
           str.push(',')
@@ -43,16 +41,16 @@ function makePrettyArray(obj, indent = 0, nestedObject = false) {
     if (typeof obj === 'object') {
       str.push(`{`)
       const keys = Object.keys(obj)
-      let initialIndent = indent
+      let newIndent = nested + 1
       keys.forEach((key, i) => {
         if (i === 0) {
           const initialKey = ` "${key}": `
-          initialIndent += 5
+          newIndent += initialKey.length
           str.push(initialKey)
         } else {
-          str.push(`\n${makeIndent((nestedObject ? initialIndent : indent) + 2)}"${key}": `)
+          str.push(`\n${makeIndent((nested ? nested : indent) + 2)}"${key}": `)
         }
-        str.push(makePrettyArray(obj[key], (nestedObject ? initialIndent : indent) + 2, true).join(''))
+        str.push(makePrettyArray(obj[key], (nested ? nested : indent) + 2, newIndent).join(''))
         if (i < keys.length - 1) {
           str.push(`,`)
         }
